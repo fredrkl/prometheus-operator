@@ -1,0 +1,47 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Prometheus
+metadata:
+  name: prometheus
+  namespace: monitor
+spec:
+  alerting:
+    alertmanagers:
+    - namespace: monitor
+      name: alertmanager-itdsalertmanager
+      port: web
+  securityContext:
+    runAsUser: 0
+  serviceAccountName: prometheus
+  serviceMonitorNamespaceSelector:
+    matchLabels:
+      system: monitor
+  serviceMonitorSelector:
+    matchLabels:
+      team: core
+  ruleSelector:
+    matchLabels:
+      prometheus: itds
+      role: alert-rules
+  ruleNamespaceSelector:
+    matchLabels:
+      monitor: alertrules
+  resources:
+    requests:
+      memory: 400Mi
+  thanos:
+    baseImage: thanosio/thanos
+    version: v0.11.0
+    objectStorageConfig:
+      key: thanos.yaml
+      name: thanos-object-store-config
+  retention: 1y
+  retentionSize: 30GB
+  storage:
+    volumeClaimTemplate:
+      metadata:
+        namespace: monitor
+      spec:
+        storageClassName: managed-premium-retain
+        resources:
+          requests:
+            storage: 31Gi

@@ -1,0 +1,7 @@
+type: AZURE
+config:
+  storage_account: "$STORAGEACCOUNT"
+  storage_account_key: "$STORAGEACCOUNTKEY"
+  container: "metrics"
+  endpoint: "blob.core.windows.net"
+  max_retries: 1

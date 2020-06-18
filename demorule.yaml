@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    prometheus: itds
+    role: alert-rules
+  name: planet9
+  namespace: monitor
+spec:
+  groups:
+  - name: ./demo.rules
+    interval: 10s
+    rules:
+    - alert: "Planet9 resources running low"
+      expr: "sum(rate(container_cpu_usage_seconds_total{id='/'}[1m]))/sum(machine_cpu_cores{})*100>15"

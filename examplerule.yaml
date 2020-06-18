@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  creationTimestamp: null
+  labels:
+    prometheus: itds
+    role: alert-rules
+    cmp_Delivery: major_outage
+  name: prometheus-example-rules
+  namespace: monitor
+spec:
+  groups:
+  - name: ./example.rules
+    rules:
+    - alert: ItdsDemoAlert
+      expr: vector(1)
+      annotations:
+        priority: P5
+        description: "Example alert. Nothing you can do."

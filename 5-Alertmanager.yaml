@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Alertmanager
+metadata:
+  name: itdsalertmanager
+  namespace: monitor
+spec:
+  securityContext:
+    runAsUser: 2000
+  replicas: 1
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: alertmanager-itdsalertmanager
+  namespace: monitor
+spec:
+  selector:
+    alertmanager: itdsalertmanager
+  ports:
+  - name: web
+    port: 9090
+    targetPort: web
